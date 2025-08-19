@@ -80,12 +80,12 @@ def generate_response(model, tokenizer, prompt, max_new_tokens=150, temperature=
         if idx.shape[1] > 512:
             break
     
-    # Decode the full sequence
-    full_text = tokenizer.decode(idx[0], skip_special_tokens=True)
+    # Decode the full sequence with special tokens included
+    full_text_with_tokens = tokenizer.decode(idx[0], skip_special_tokens=False)
+    full_text_clean = tokenizer.decode(idx[0], skip_special_tokens=True)
     
-    # Extract only the response part (after the prompt)
-    # This is a simple approach - you might need to adjust based on your format
-    return full_text
+    # Return both versions
+    return full_text_clean, full_text_with_tokens
 
 def format_instruction_prompt(instruction, input_text=""):
     """
@@ -118,7 +118,7 @@ def chat_loop(model, tokenizer, device="cuda"):
         'temperature': 0.7,
         'top_k': 50,
         'top_p': 0.95,
-        'max_tokens': 150
+        'max_tokens': 500
     }
     
     conversation_history = []
@@ -197,9 +197,9 @@ def chat_loop(model, tokenizer, device="cuda"):
             # Generate response
             print("\n🤖 Model: ", end="", flush=True)
             
-            response = generate_response(
-                model, 
-                tokenizer, 
+            response_clean, response_with_tokens = generate_response(
+                model,
+                tokenizer,
                 formatted_prompt,
                 max_new_tokens=settings['max_tokens'],
                 temperature=settings['temperature'],
@@ -209,12 +209,19 @@ def chat_loop(model, tokenizer, device="cuda"):
             )
             
             # Extract just the response part (after "### Response:")
-            if "### Response:" in response:
-                response_text = response.split("### Response:")[-1].strip()
+            if "### Response:" in response_clean:
+                response_text = response_clean.split("### Response:")[-1].strip()
             else:
-                response_text = response.strip()
+                response_text = response_clean.strip()
+            
+            # Extract response with special tokens
+            if "### Response:" in response_with_tokens:
+                response_with_tokens_text = response_with_tokens.split("### Response:")[-1].strip()
+            else:
+                response_with_tokens_text = response_with_tokens.strip()
             
             print(response_text)
+            #print(f"\n🔍 With special tokens: {response_with_tokens_text}")
             
             # Store in conversation history
             conversation_history.append({

@@ -91,11 +91,11 @@ if __name__ == "__main__":
     print("Starting instruction fine-tuning on Alpaca dataset...")
     model = finetune_alpaca(
         checkpoint_path=checkpoint_path,
-        num_steps=1000,
-        dataset_fraction="train[:10%]",
+        num_steps=4000,
+        dataset_fraction="train[:100%]",
         output_dir=output_dir,
         checkpoint_name="sft_test",
-        lr=5e-5,
+        lr=5e-3,
         max_length=256,
         batch_size=8
     )

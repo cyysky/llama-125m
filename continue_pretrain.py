@@ -110,7 +110,7 @@ def continue_pretrain_tinystories_slice(
     Convenience wrapper to continue pretraining on TinyStories split.
     """
     # Use a different split for continued training to avoid overfitting
-    dataset = load_dataset("roneneldan/TinyStories", split="train[32%:35%]")
+    dataset = load_dataset("roneneldan/TinyStories", split="train[0%:100%]")
     tokenizer = AutoTokenizer.from_pretrained("gpt2")
     tokenizer.pad_token = tokenizer.eos_token
 
@@ -168,7 +168,7 @@ if __name__ == "__main__":
         checkpoint_path,
         output_dir="./llama125m_tinystories",
         checkpoint_name="continued",
-        num_steps=500,
+        num_steps=550,
         batch_size=8,
         lr=5e-5
     )

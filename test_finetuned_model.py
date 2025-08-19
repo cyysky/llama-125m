@@ -81,9 +81,11 @@ def main():
         
         "### Instruction:\nExplain photosynthesis in simple terms.\n\n### Response:\n",
         
-        "### Instruction:\nList three benefits of regular exercise.\n\n### Response:\n",
+        "### Instruction:\nIdentify the odd one out.\n\n### Input:\nTwitter, Instagram, Telegram\n\n### Response:\n",
         
-        "### Instruction:\nTranslate the following to French.\n\n### Input:\nHello, how are you today?\n\n### Response:\n",
+        "### Instruction:\nWhat are the three primary colors?\n\n### Input:\n\n\n### Response:\n",
+
+        "### Instruction:\nGive three tips for staying healthy.\n\n### Input:\n\n\n### Response:\n"
     ]
     
     for i, prompt in enumerate(test_prompts, 1):
